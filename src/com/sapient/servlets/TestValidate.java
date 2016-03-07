@@ -8,16 +8,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.sapient.actors.Employee;
+import com.sapient.actors.Patient;
+import com.sapient.dao.EmployeeDAO;
+import com.sapient.dao.PatientDAO;
+
 /**
- * Servlet implementation class Validate
+ * Servlet implementation class TestValidate
  */
-public class Validate extends HttpServlet {
+public class TestValidate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Validate() {
+    public TestValidate() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,14 +32,19 @@ public class Validate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/plain");
+		response.setContentType("application/json");
 		//response.setHeader("Cache-Control", "no-cache");
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out=response.getWriter();
-		String labCode=request.getParameter("labCode");
-		System.out.println(labCode);
-		if(labCode.equals("1034"))
-			out.write("ambersingh11");
+		String patientCode=request.getParameter("patientCode");
+		System.out.println(patientCode);
+		PatientDAO dao=new PatientDAO();
+		Patient pat=dao.find(patientCode);
+		if(pat!=null){
+			String jsonPat=new Gson().toJson(pat);
+			System.out.println(jsonPat);
+			out.write(jsonPat);
+		}
 	}
 
 	/**
