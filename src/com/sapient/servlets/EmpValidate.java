@@ -38,7 +38,7 @@ public class EmpValidate extends HttpServlet {
 		String userName=request.getParameter("userName");
 		int empCode=0;
 		try{
-		empCode=Integer.parseInt(request.getParameter("empCode"));
+			empCode=Integer.parseInt(request.getParameter("empCode"));
 		}
 		catch(Exception ex){}
 		EmployeeDAO dao=new EmployeeDAO();

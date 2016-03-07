@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.sapient.actors.Employee;
 import com.sapient.actors.Patient;
-import com.sapient.dao.EmployeeDAO;
+import com.sapient.actors.Test;
 import com.sapient.dao.PatientDAO;
+import com.sapient.dao.TestDAO;
 
 /**
  * Servlet implementation class TestValidate
@@ -32,18 +32,36 @@ public class TestValidate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Patient pat=null;
+		Test test=null;
 		response.setContentType("application/json");
 		//response.setHeader("Cache-Control", "no-cache");
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out=response.getWriter();
 		String patientCode=request.getParameter("patientCode");
-		System.out.println(patientCode);
-		PatientDAO dao=new PatientDAO();
-		Patient pat=dao.find(patientCode);
-		if(pat!=null){
-			String jsonPat=new Gson().toJson(pat);
-			System.out.println(jsonPat);
-			out.write(jsonPat);
+		int testCode=0;
+		try{
+			testCode=Integer.parseInt(request.getParameter("testCode"));
+		}catch(Exception ex){}
+		//System.out.println(patientCode);
+		
+		PatientDAO patDao=new PatientDAO();
+		TestDAO testDao=new TestDAO();
+		if(patientCode!=null){
+			pat=patDao.find(patientCode);
+			if(pat!=null){
+				String jsonPat=new Gson().toJson(pat);
+				System.out.println(jsonPat);
+				out.write(jsonPat);
+			}
+		}
+		else{	
+			test=testDao.find(testCode);
+			if(test!=null){
+				String jsonTest=new Gson().toJson(test);
+				System.out.println(jsonTest);
+				out.write(jsonTest);
+			}
 		}
 	}
 
